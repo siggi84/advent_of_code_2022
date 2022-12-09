@@ -22,18 +22,18 @@ sign x | x < 0 = -1
        | x > 0 = 1
        | otherwise = 0
 
+mover :: Location -> Direction -> Location
+mover (L xi yi) UP    =  L xi (yi+1)
+mover (L xi yi) DOWN  =  L xi (yi-1)
+mover (L xi yi) RIGHT =  L (xi+1) yi
+mover (L xi yi) LEFT  =  L (xi-1) yi
+
 part_helper :: [Direction] -> Int -> Int
 part_helper ss m = res where
-  helper (L xi yi) UP =  L xi (yi+1)
-  helper (L xi yi) DOWN =  L xi (yi-1)
-  helper (L xi yi) RIGHT =  L (xi+1) yi
-  helper (L xi yi) LEFT =  L (xi-1) yi
-
-
-  head_location = scanl helper (L 0 0) ss 
-  follower (L tx ty) (L hx hy) | ty == hy && abs delta_x > 1 = (L (tx + (sign delta_x)) ty)
-                               | tx == hx && abs delta_y > 1 = (L tx (ty + (sign delta_y)))
-                               | abs delta_x + abs delta_y > 2 = L (tx + (sign delta_x)) (ty + (sign delta_y))
+  head_location = scanl mover (L 0 0) ss 
+  follower (L tx ty) (L hx hy) | ty == hy && abs delta_x > 1   = (L (tx + (sign delta_x)) ty)
+                               | tx == hx && abs delta_y > 1   = (L  tx (ty + (sign delta_y)))
+                               | abs delta_x + abs delta_y > 2 =  L (tx + (sign delta_x)) (ty + (sign delta_y))
                                | otherwise = L tx ty where
     delta_x = hx - tx
     delta_y = hy - ty
