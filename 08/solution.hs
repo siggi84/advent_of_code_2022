@@ -30,8 +30,37 @@ part1 d = res where
   is_visible = helper2db min_height_to_edge d
   res = sum (map sum is_visible)
 
+part2 :: [[Int]] -> Int
+part2 d = res where
+  -- res = 0
+  right_helper :: [Int] -> Int
+  right_helper [] = error "Error"
+  right_helper (v:[]) = 0
+  right_helper (v:vs) = res where 
+    tmp = (length (takeWhile (\t -> (t < v)) vs))
+    vs_len = length vs
+    res = if tmp == vs_len then tmp else tmp+1
+
+  right_helper2 :: [Int] -> [Int]
+  right_helper2 (v:[]) = [right_helper [v]]
+  right_helper2 v = (right_helper v):(right_helper2 (tail v))
+
+  multi_right_helper = map right_helper2
+
+  left = multi_right_helper d
+  right = map reverse (multi_right_helper (map reverse d))
+  top = transpose (multi_right_helper (transpose d))
+  bottom_d = map reverse (transpose d)
+  bottom = transpose (map reverse (multi_right_helper bottom_d))
+  listMul (x:xs) (y:ys) = x * y : (listMul xs ys)
+  listMul [] [] = []
+  listMul _ _ = error "Lengths do not match"
+  listMul2d x y = map (\t -> listMul (fst t) (snd t)) (zip x y)
+  tmp = listMul2d (listMul2d left right) (listMul2d top bottom)
+  res = maximum (map maximum tmp)
+
 main = do
   input <- readFile "input.dat"
   let forrest = parseInput input
-  -- print (fromLeft forrest)
   print (part1 forrest)
+  print (part2 forrest)
