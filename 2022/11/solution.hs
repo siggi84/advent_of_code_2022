@@ -66,7 +66,6 @@ parseInput s = map parseMonkey $ splitOn "\n\n" s
 main = do
   input <- readFile "input.dat"
   let parsedInput = parseInput input
-  
 
   print (part1 parsedInput)
   print (part2 parsedInput)

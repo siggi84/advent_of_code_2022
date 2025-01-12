@@ -193,7 +193,11 @@ part2 gridMap = evaluate findNext gridMap
           | otherwise = C (getX enterCoord + getX nextBlock * blockSize) (getY enterCoord + getY nextBlock * blockSize)
 
 main = do
+  testInputString <- readFile "test_input.dat"
+  let testGridMap = parse testInputString
   inputString <- readFile "input.dat"
   let gridMap = parse inputString
+  print (part1 testGridMap)
   print (part1 gridMap)
+  print (part2 testGridMap)
   print (part2 gridMap)

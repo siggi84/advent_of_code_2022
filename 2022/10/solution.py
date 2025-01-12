@@ -28,6 +28,7 @@ def locations(instructions):
 
 def part1(instructions):
     X = locations(instructions)
+    print("xs", [X[idx] for idx in range(20, 221, 40)])
     return sum([idx * X[idx] for idx in range(20, 221, 40)])
 
 

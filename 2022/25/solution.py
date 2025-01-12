@@ -12,8 +12,7 @@ def snafu_to_int(snafu):
     return sum
 
 
-def int_to_snafu(v):
-    q = v
+def int_to_snafu(q):
     sn = ""
     while True:
         m = q % 5

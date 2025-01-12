@@ -44,7 +44,7 @@ def helper_generator(template):
         if build_next is None:
             best_res = 0
             for idx in reversed(range(NUM_ROBOT_TYPES)):
-                if num_robots[idx] >= max_needed[idx]:
+                if idx != GEODE and num_robots[idx] >= max_needed[idx]:
                     continue
 
                 res = helper(time_left, num_robots, num_resources, idx)

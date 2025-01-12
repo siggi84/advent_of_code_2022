@@ -22,11 +22,11 @@ parseInput s = map parseLine $ filter (not . null) (lines s)
 
 pcompare :: Packet -> Packet -> Ordering
 pcompare (Number p1) (Number p2) = compare p1 p2
-pcompare (List []) (List []) = EQ
-pcompare (List []) (List cs) = LT
-pcompare (List cs) (List []) = GT
 pcompare (List cs) (Number n) = pcompare (List cs) (List [Number n])
 pcompare (Number n) (List cs) = pcompare (List [Number n]) (List cs)
+pcompare (List []) (List []) = EQ
+pcompare (List []) (List _) = LT
+pcompare (List _) (List []) = GT
 pcompare (List (h1:r1)) (List (h2:r2)) =
   case pcompare h1 h2 of
     EQ -> pcompare (List r1) (List r2)

@@ -1,6 +1,5 @@
 import Data.List
 import Data.Maybe
-import Debug.Trace
 
 parseInput :: String -> [(Int, Int)]
 parseInput s = zip [0 ..] $ map read (lines s)

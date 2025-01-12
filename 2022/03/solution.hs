@@ -1,12 +1,13 @@
 import Data.List (intersect)
+import Data.List.Split (splitOn)
 import Data.Char (ord)
 
 main :: IO()
 
 charPriority :: Char -> Int
-charPriority c = p where
-    asci_num = ord c
-    p = if asci_num > 96 then asci_num-96 else asci_num-65+27
+charPriority c
+  | c >= 'a'  = (ord c) - (ord 'a') + 1 
+  | otherwise = (ord c) - (ord 'A') + 27 where
 
 compartmentPriority :: String -> Int
 compartmentPriority l = res where

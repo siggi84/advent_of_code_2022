@@ -58,6 +58,7 @@ def get_graph(path):
 def part1(path):
     G, start, end, _ = get_graph(path)
     res = nx.shortest_path(G, source=start, target=end)
+
     return len(res) - 1
 
 
@@ -70,6 +71,7 @@ def part2(path):
             path_lengths.append(len(res) - 1)
         except nx.exception.NetworkXNoPath:
             pass
+
     return min(path_lengths)
 
 

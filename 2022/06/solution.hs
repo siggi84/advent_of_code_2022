@@ -4,8 +4,8 @@ markerLocation :: Int -> Int -> String -> Int
 
 markerLocation n i "" = error "No marker found"
 markerLocation n i s 
-  | length (nub (take n s)) == n = i + n
-  | otherwise                    = markerLocation n (i+1) (tail s)
+  | length (nub (take n s)) /= n = markerLocation n (i+1) (tail s)
+  | otherwise                    = i + n
 
 main = do
   input <- readFile "input.dat"

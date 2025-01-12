@@ -32,7 +32,6 @@ part1 d = res where
 
 part2 :: [[Int]] -> Int
 part2 d = res where
-  -- res = 0
   right_helper :: [Int] -> Int
   right_helper [] = error "Error"
   right_helper (v:[]) = 0
@@ -52,12 +51,14 @@ part2 d = res where
   top = transpose (multi_right_helper (transpose d))
   bottom_d = map reverse (transpose d)
   bottom = transpose (map reverse (multi_right_helper bottom_d))
+
   listMul (x:xs) (y:ys) = x * y : (listMul xs ys)
   listMul [] [] = []
   listMul _ _ = error "Lengths do not match"
   listMul2d x y = map (\t -> listMul (fst t) (snd t)) (zip x y)
+
   tmp = listMul2d (listMul2d left right) (listMul2d top bottom)
-  res = maximum (map maximum tmp)
+  res = maximum $ map maximum tmp
 
 main = do
   input <- readFile "input.dat"

@@ -27,6 +27,8 @@ get m rc = fromJust (Map.lookup m rc)
 insert :: Material -> Int -> RobotCost -> RobotCost
 insert = Map.insert
 
+mapWithKey = Map.mapWithKey
+
 parseInput :: String -> [BluePrint]
 parseInput s = map handleLine (lines s)
   where
@@ -38,6 +40,12 @@ parseInput s = map handleLine (lines s)
         clayCost = insert ORE (read (sl !! 12) :: Int) emptyRobotCost
         obsidianCost = insert CLAY (read (sl !! 21) :: Int) (insert ORE (read (sl !! 18) :: Int) emptyRobotCost)
         geodeCost = insert OBSIDIAN (read (sl !! 30) :: Int) (insert ORE (read (sl !! 27) :: Int) emptyRobotCost)
+
+ceilDiv m n = if r == 0 then q else q+1 
+  where
+    q = m `div` n
+    r = mod m n
+
 
 blueprintEvaluator totalTime bp = helper totalTime startRobots startResources Nothing 0
   where
@@ -55,6 +63,7 @@ blueprintEvaluator totalTime bp = helper totalTime startRobots startResources No
       where
         relevantRobots = filter (\m -> get m maxNumRobots > get m numRobots) materialTypes
 
+
     helper timeLeft numRobots numResources (Just buildNext) bestSoFar
       | upperBound <= bestSoFar = bestSoFar
       | otherwise = helper (timeLeft - 1) updatedNumRobots updatedNumResources updatedBuildNext bestSoFar
@@ -63,6 +72,7 @@ blueprintEvaluator totalTime bp = helper totalTime startRobots startResources No
         upperBoundNG = get GEODE numResources + (timeLeft-1) * get GEODE numRobots + ((timeLeft-1) * (timeLeft - 2)) `div` 2
         upperBound = if buildNext == GEODE then upperBoundG else upperBoundNG
         canAffordRobot = all (\m -> get m numResources >= get m (getBP buildNext bp)) materialTypes
+        timeLeftToAfford = map (\m -> (get m numResources - get m (getBP buildNext bp)) `ceilDiv` (get m numRobots)) materialTypes
         updatedNumRobots =
           if canAffordRobot
             then insert buildNext (get buildNext numRobots + 1) numRobots
@@ -71,7 +81,7 @@ blueprintEvaluator totalTime bp = helper totalTime startRobots startResources No
           if canAffordRobot
             then getBP buildNext bp
             else emptyRobotCost
-        updatedNumResources = Map.mapWithKey (\k v -> v + get k numRobots - get k buyCost) numResources
+        updatedNumResources = mapWithKey (\k v -> v + get k numRobots - get k buyCost) numResources
         updatedBuildNext = if canAffordRobot then Nothing else Just buildNext
 
 part1 bps = sum $ map (\(index, bp) -> index * blueprintEvaluator 24 bp) (zip [1 ..] bps)

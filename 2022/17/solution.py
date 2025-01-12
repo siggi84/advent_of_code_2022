@@ -34,7 +34,7 @@ class Shape:
 
     def signature(self):
         h = self.grid.height()
-        return frozenset((x, y - h) for (x, y) in self.loc),
+        return (frozenset((x, y - h) for (x, y) in self.loc),)
 
 
 class Grid:
@@ -113,11 +113,7 @@ def part2(steps, m=1000000000000):
                     return grid.height() + repetition_height
 
         h = grid.height()
-        key = (
-            num_landed_shapes % num_shapes,
-            grid.signature(),
-            shape.signature()
-        )
+        key = (num_landed_shapes % num_shapes, grid.signature(), shape.signature())
         if key in cache:
             last_h, last_sc = cache[key]
 

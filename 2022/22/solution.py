@@ -54,6 +54,7 @@ def part1(instructions, grid):
                     elif grid[next_coord[0]][next_coord[1]] == "#":
                         break
 
+    print(coord)
     return (coord[0] + 1) * 1000 + 4 * (coord[1] + 1) + dindex
 
 
@@ -197,6 +198,7 @@ def part2(instructions, grid):
 def main():
     test_instructions, test_grid = parse("test_input.dat")
     instructions, grid = parse("input.dat")
+    print(fold_cube(grid))
 
     assert part1(test_instructions, test_grid) == 6032
     print(part1(instructions, grid))
